@@ -1,0 +1,14 @@
+{
+  "name": "@vindustry/water-tank",
+  "version": "0.0.1",
+  "exports": "./src/simulation.ts",
+  "tasks": {
+    "test": "deno test tests/"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1"
+  },
+  "compilerOptions": {
+    "strict": true
+  }
+}
