@@ -1,0 +1,100 @@
+# ABB ACS580
+# General Purpose Variable Frequency Drive
+# Reference: ABB 3AXD50000016097 Rev H, Chapter 10
+#
+# ABB uses 400001-based register numbering.
+# Protocol-level address 0 = register 400001.
+# Parameter XX.YY accessible at address (XX*100 + YY - 1).
+#
+# Speed reference: 20000 = nominal speed (parameter 46.01, default 1500 RPM)
+# Actual values: INT16 with FbEq32 scale factors.
+
+manufacturer: ABB
+model: ACS580
+type: vfd
+protocol: modbus-tcp
+
+modbus:
+  unitId: 1
+  byteOrder: ABCD
+  registers:
+    # Fieldbus control/status registers (addresses 0-5)
+    - name: controlWord
+      address: 0
+      functionCode: holding
+      datatype: uint16
+      writable: true
+      default: 0
+      physics: controlWord
+
+    - name: speedReference
+      address: 1
+      functionCode: holding
+      datatype: int16
+      writable: true
+      scale: 13.33    # 20000 = 1500 RPM → scale = 20000/1500 ≈ 13.33
+      physics: speedCommand
+
+    - name: statusWord
+      address: 3
+      functionCode: holding
+      datatype: uint16
+      computed: statusWord
+      default: 0x0307  # Ready to switch on, ready to operate, operation enabled, remote
+
+    - name: actualSpeed
+      address: 4
+      functionCode: holding
+      datatype: int16
+      scale: 100       # FbEq32: 100 = 1 RPM
+      unit: RPM
+      physics: actualSpeed
+
+    - name: actualFrequency
+      address: 5
+      functionCode: holding
+      datatype: int16
+      scale: 100       # FbEq32: 100 = 1 Hz
+      unit: Hz
+      physics: actualFrequency
+
+    # Direct parameter access (parameter 01.XX)
+    - name: motorSpeed
+      address: 100     # Parameter 01.01
+      functionCode: holding
+      datatype: int16
+      scale: 100       # FbEq32: 100 = 1 RPM
+      unit: RPM
+      physics: actualSpeed
+
+    - name: outputFrequency
+      address: 105     # Parameter 01.06
+      functionCode: holding
+      datatype: int16
+      scale: 100       # FbEq32: 100 = 1 Hz
+      unit: Hz
+      physics: actualFrequency
+
+    - name: motorCurrent
+      address: 106     # Parameter 01.07
+      functionCode: holding
+      datatype: int16
+      scale: 100       # FbEq32: 100 = 1 A
+      unit: A
+      physics: motorCurrent
+
+    - name: motorTorque
+      address: 109     # Parameter 01.10
+      functionCode: holding
+      datatype: int16
+      scale: 10        # FbEq32: 10 = 1%
+      unit: "%"
+      physics: motorTorque
+
+    - name: dcVoltage
+      address: 110     # Parameter 01.11
+      functionCode: holding
+      datatype: int16
+      scale: 100       # FbEq32: 100 = 1 V
+      unit: V
+      default: 540     # ~540V DC bus typical for 400V supply

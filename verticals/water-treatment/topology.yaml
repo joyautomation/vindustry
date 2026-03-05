@@ -1,0 +1,40 @@
+name: water-treatment
+description: Water treatment clearwell — single black-box PLC
+
+networks:
+  control:
+    ipv4: 10.50.1.0/24
+    description: Control network
+
+containers:
+  plc:
+    image: images:ubuntu/24.04
+    network:
+      name: control
+      ipv4: 10.50.1.10
+    setup:
+      - apt-get update -qq && apt-get install -y -qq curl unzip git > /dev/null
+      - curl -fsSL https://github.com/nats-io/nats-server/releases/download/v2.12.4/nats-server-v2.12.4-linux-amd64.tar.gz -o /tmp/nats.tar.gz && tar -xzf /tmp/nats.tar.gz -C /tmp && cp /tmp/nats-server-v2.12.4-linux-amd64/nats-server /usr/local/bin/
+      - curl -fsSL https://deno.land/install.sh | sh > /dev/null 2>&1
+    sources:
+      - verticals/water-treatment
+      - repo: tentacle
+        path: tentacle-modbus-server
+        git: https://github.com/joyautomation/tentacle.git
+        ref: main
+    services:
+      nats:
+        run: /usr/local/bin/nats-server -js
+      plc:
+        run: /root/.deno/bin/deno task start
+        working_directory: /opt/vindustry/workspace/verticals/water-treatment
+        env:
+          NATS_SERVERS: nats://localhost:4222
+          PROJECT_ID: water-treatment
+        after: nats
+      modbus-server:
+        run: /root/.deno/bin/deno task start
+        working_directory: /opt/vindustry/tentacle-modbus-server
+        env:
+          NATS_SERVERS: nats://localhost:4222
+        after: nats

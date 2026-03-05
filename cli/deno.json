@@ -1,0 +1,16 @@
+{
+  "name": "@vindustry/cli",
+  "version": "0.0.1",
+  "exports": "./src/main.ts",
+  "tasks": {
+    "vindustry": "deno run --allow-run=incus --allow-read --allow-env src/main.ts"
+  },
+  "imports": {
+    "@std/yaml": "jsr:@std/yaml@1",
+    "@std/fmt": "jsr:@std/fmt@1",
+    "@std/path": "jsr:@std/path@1"
+  },
+  "compilerOptions": {
+    "strict": true
+  }
+}

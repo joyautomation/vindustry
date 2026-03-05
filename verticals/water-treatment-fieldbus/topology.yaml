@@ -1,0 +1,164 @@
+name: water-treatment-fieldbus
+description: >
+  Water treatment clearwell with simulated field instruments.
+  Each instrument runs in its own container with a real IP and Modbus TCP interface,
+  using profiles based on real manufacturer register maps.
+
+networks:
+  field:
+    ipv4: 10.50.2.0/24
+    description: Field instrument network
+
+containers:
+  nats:
+    image: images:ubuntu/24.04
+    network:
+      name: field
+      ipv4: 10.50.2.2
+    setup:
+      - apt-get update -qq && apt-get install -y -qq curl > /dev/null
+      - curl -fsSL https://github.com/nats-io/nats-server/releases/download/v2.12.4/nats-server-v2.12.4-linux-amd64.tar.gz -o /tmp/nats.tar.gz && tar -xzf /tmp/nats.tar.gz -C /tmp && cp /tmp/nats-server-v2.12.4-linux-amd64/nats-server /usr/local/bin/
+    services:
+      nats:
+        run: /usr/local/bin/nats-server -js
+
+  physics:
+    image: images:ubuntu/24.04
+    network:
+      name: field
+      ipv4: 10.50.2.3
+    depends_on: [nats]
+    setup:
+      - apt-get update -qq && apt-get install -y -qq curl unzip > /dev/null
+      - curl -fsSL https://deno.land/install.sh | sh > /dev/null 2>&1
+    sources:
+      - verticals/water-treatment-fieldbus
+    services:
+      physics:
+        run: /root/.deno/bin/deno task physics
+        working_directory: /opt/vindustry/workspace/verticals/water-treatment-fieldbus
+        env:
+          NATS_SERVERS: nats://10.50.2.2:4222
+          PLC_PROJECT_ID: water-treatment
+
+  flow-meter:
+    image: images:ubuntu/24.04
+    network:
+      name: field
+      ipv4: 10.50.2.20
+    depends_on: [nats]
+    setup:
+      - apt-get update -qq && apt-get install -y -qq curl unzip git > /dev/null
+      - curl -fsSL https://deno.land/install.sh | sh > /dev/null 2>&1
+    sources:
+      - instruments
+      - repo: tentacle
+        path: tentacle-modbus-server
+        git: https://github.com/joyautomation/tentacle.git
+        ref: main
+    services:
+      modbus-server:
+        run: /root/.deno/bin/deno task start
+        working_directory: /opt/vindustry/tentacle-modbus-server
+        env:
+          NATS_SERVERS: nats://10.50.2.2:4222
+      instrument:
+        run: /root/.deno/bin/deno task instrument
+        working_directory: /opt/vindustry/workspace/instruments
+        env:
+          NATS_SERVERS: nats://10.50.2.2:4222
+          PROFILE: flow-meters/siemens-sitrans-fm-mag8000
+          SOURCE_MODULE: flow-meter
+        after: modbus-server
+
+  level-sensor:
+    image: images:ubuntu/24.04
+    network:
+      name: field
+      ipv4: 10.50.2.21
+    depends_on: [nats]
+    setup:
+      - apt-get update -qq && apt-get install -y -qq curl unzip git > /dev/null
+      - curl -fsSL https://deno.land/install.sh | sh > /dev/null 2>&1
+    sources:
+      - instruments
+      - repo: tentacle
+        path: tentacle-modbus-server
+        git: https://github.com/joyautomation/tentacle.git
+        ref: main
+    services:
+      modbus-server:
+        run: /root/.deno/bin/deno task start
+        working_directory: /opt/vindustry/tentacle-modbus-server
+        env:
+          NATS_SERVERS: nats://10.50.2.2:4222
+      instrument:
+        run: /root/.deno/bin/deno task instrument
+        working_directory: /opt/vindustry/workspace/instruments
+        env:
+          NATS_SERVERS: nats://10.50.2.2:4222
+          PROFILE: level-transmitters/endress-hauser-levelflex-fmp51
+          SOURCE_MODULE: level-sensor
+        after: modbus-server
+
+  vfd:
+    image: images:ubuntu/24.04
+    network:
+      name: field
+      ipv4: 10.50.2.30
+    depends_on: [nats]
+    setup:
+      - apt-get update -qq && apt-get install -y -qq curl unzip git > /dev/null
+      - curl -fsSL https://deno.land/install.sh | sh > /dev/null 2>&1
+    sources:
+      - instruments
+      - repo: tentacle
+        path: tentacle-modbus-server
+        git: https://github.com/joyautomation/tentacle.git
+        ref: main
+    services:
+      modbus-server:
+        run: /root/.deno/bin/deno task start
+        working_directory: /opt/vindustry/tentacle-modbus-server
+        env:
+          NATS_SERVERS: nats://10.50.2.2:4222
+      instrument:
+        run: /root/.deno/bin/deno task instrument
+        working_directory: /opt/vindustry/workspace/instruments
+        env:
+          NATS_SERVERS: nats://10.50.2.2:4222
+          PROFILE: vfds/abb-acs580
+          SOURCE_MODULE: vfd
+        after: modbus-server
+
+  plc:
+    image: images:ubuntu/24.04
+    network:
+      name: field
+      ipv4: 10.50.2.10
+    depends_on: [nats, flow-meter, level-sensor, vfd]
+    setup:
+      - apt-get update -qq && apt-get install -y -qq curl unzip git > /dev/null
+      - curl -fsSL https://deno.land/install.sh | sh > /dev/null 2>&1
+    sources:
+      - verticals/water-treatment-fieldbus
+      - repo: tentacle
+        path: tentacle-modbus
+        git: https://github.com/joyautomation/tentacle.git
+        ref: main
+    services:
+      modbus-scanner:
+        run: /root/.deno/bin/deno task start
+        working_directory: /opt/vindustry/tentacle-modbus
+        env:
+          NATS_SERVERS: nats://10.50.2.2:4222
+      plc:
+        run: /root/.deno/bin/deno task plc
+        working_directory: /opt/vindustry/workspace/verticals/water-treatment-fieldbus
+        env:
+          NATS_SERVERS: nats://10.50.2.2:4222
+          PROJECT_ID: water-treatment
+          FLOW_METER_HOST: 10.50.2.20
+          LEVEL_SENSOR_HOST: 10.50.2.21
+          VFD_HOST: 10.50.2.30
+        after: modbus-scanner

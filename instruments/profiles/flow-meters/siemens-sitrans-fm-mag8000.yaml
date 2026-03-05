@@ -1,0 +1,69 @@
+# Siemens SITRANS F M MAG 8000
+# Electromagnetic Flow Meter
+# Reference: Siemens A5E03409989-AB, Modbus RTU Operating Instructions
+#
+# Register addresses are 0-indexed (protocol-level).
+# Siemens docs use 4:3001 notation = holding register address 3000.
+
+manufacturer: Siemens
+model: SITRANS F M MAG 8000
+type: flow-meter
+protocol: modbus-tcp
+
+modbus:
+  unitId: 1
+  byteOrder: ABCD
+  registers:
+    # Measurement registers (read-only)
+    - name: velocity
+      address: 3000
+      functionCode: holding
+      datatype: float32
+      unit: mm/s
+      physics: velocity
+
+    - name: flowRate
+      address: 3002
+      functionCode: holding
+      datatype: float32
+      unit: GPM
+      physics: flowRate
+
+    - name: flowRatePercent
+      address: 3012
+      functionCode: holding
+      datatype: float32
+      unit: "%"
+      physics: flowRatePercent
+
+    # Totalizer (accumulated volume)
+    # Real MAG 8000 uses 8-byte totaltype, simplified to float32 for simulation
+    - name: totalizer1
+      address: 3017
+      functionCode: holding
+      datatype: float32
+      unit: gallons
+      physics: flowRate
+      computed: accumulate
+
+    # Electrode impedance (simulated as constant healthy value)
+    - name: electrodeImpedanceA
+      address: 3008
+      functionCode: holding
+      datatype: int32
+      unit: ohm
+      default: 50000
+
+    - name: electrodeImpedanceB
+      address: 3010
+      functionCode: holding
+      datatype: int32
+      unit: ohm
+      default: 50000
+
+    # Device status coil (1 = healthy)
+    - name: deviceHealthy
+      address: 0
+      functionCode: coil
+      datatype: boolean
+      default: 1

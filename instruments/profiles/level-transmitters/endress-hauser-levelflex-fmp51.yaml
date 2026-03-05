@@ -1,0 +1,70 @@
+# Endress+Hauser Levelflex FMP51
+# Guided Wave Radar Level Transmitter
+# Reference: BA01957FEN_0119, Section 15.5
+#
+# Using the ABCD byte order register block (2000+) for standard big-endian.
+# The FMP51 also supports CDAB at registers 100+.
+
+manufacturer: Endress+Hauser
+model: Levelflex FMP51
+type: level-transmitter
+protocol: modbus-tcp
+
+modbus:
+  unitId: 1
+  byteOrder: ABCD
+  registers:
+    # Process variables (ABCD block)
+    - name: level
+      address: 2002
+      functionCode: holding
+      datatype: float32
+      unit: "%"
+      physics: level
+
+    - name: distance
+      address: 2004
+      functionCode: holding
+      datatype: float32
+      unit: mm
+      physics: distance
+
+    - name: electronicTemperature
+      address: 2008
+      functionCode: holding
+      datatype: float32
+      unit: "°C"
+      default: 25.0
+
+    # Unit codes (HART standard)
+    - name: pvUnit
+      address: 2018
+      functionCode: holding
+      datatype: uint16
+      default: 57   # HART unit code for %
+
+    - name: svUnit
+      address: 2019
+      functionCode: holding
+      datatype: uint16
+      default: 45   # HART unit code for mm
+
+    # Firmware version
+    - name: fwMain
+      address: 10
+      functionCode: holding
+      datatype: uint16
+      default: 4
+
+    - name: fwMajor
+      address: 11
+      functionCode: holding
+      datatype: uint16
+      default: 2
+
+    # Device status (1 = device unlocked and healthy)
+    - name: additionalStatus
+      address: 199
+      functionCode: holding
+      datatype: uint16
+      default: 2   # 2 = unlocked

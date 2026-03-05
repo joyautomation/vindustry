@@ -1,3 +1,4 @@
 .env
+.vindustry.yaml
 node_modules/
 .dev-logs/

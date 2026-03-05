@@ -1,0 +1,153 @@
+{
+  "version": "5",
+  "specifiers": {
+    "jsr:@joyautomation/coral@^0.0.12": "0.0.12",
+    "jsr:@joyautomation/tentacle-nats-schema@^0.0.1": "0.0.1",
+    "jsr:@joyautomation/tentacle-plc@^0.0.6": "0.0.6",
+    "jsr:@nats-io/jetstream@3.3": "3.3.1",
+    "jsr:@nats-io/jetstream@3.3.1": "3.3.1",
+    "jsr:@nats-io/kv@3": "3.3.1",
+    "jsr:@nats-io/nats-core@3.3.1": "3.3.1",
+    "jsr:@nats-io/nkeys@2.0.3": "2.0.3",
+    "jsr:@nats-io/nuid@2.0.3": "2.0.3",
+    "jsr:@nats-io/transport-deno@3.3": "3.3.1",
+    "jsr:@std/assert@1": "1.0.14",
+    "jsr:@std/bytes@^1.0.5": "1.0.6",
+    "jsr:@std/fmt@^1.0.2": "1.0.9",
+    "jsr:@std/internal@^1.0.10": "1.0.12",
+    "jsr:@std/io@0.225.2": "0.225.2",
+    "jsr:@std/path@1": "1.1.2",
+    "jsr:@std/yaml@1": "1.0.11",
+    "npm:tweetnacl@1.0.3": "1.0.3"
+  },
+  "jsr": {
+    "@joyautomation/coral@0.0.12": {
+      "integrity": "a95c60c93c2fb9f434437fd975979038e3358f65621f55e9fd5b8d831aeda1ee",
+      "dependencies": [
+        "jsr:@std/fmt"
+      ]
+    },
+    "@joyautomation/tentacle-nats-schema@0.0.1": {
+      "integrity": "05ab61f736ed2c22e979aafba75079e3af23c4f160c484d46f2ccbdaec65c9d5"
+    },
+    "@joyautomation/tentacle-plc@0.0.6": {
+      "integrity": "fbdb8ca14d7b3366120154e0370ecdd89c8c4c4408683b4be17d00f2a8a64507",
+      "dependencies": [
+        "jsr:@joyautomation/coral",
+        "jsr:@joyautomation/tentacle-nats-schema",
+        "jsr:@nats-io/jetstream@3.3",
+        "jsr:@nats-io/kv",
+        "jsr:@nats-io/transport-deno"
+      ]
+    },
+    "@nats-io/jetstream@3.3.1": {
+      "integrity": "0881df18ff746d42598af428d5a80abc695e998a679fcfc5303f18dd67958d4c",
+      "dependencies": [
+        "jsr:@nats-io/nats-core"
+      ]
+    },
+    "@nats-io/kv@3.3.1": {
+      "integrity": "6900c5e1a5cfc30fcc7d33368ff2403bd3015d6ccab5fddf725c3101953c5a75",
+      "dependencies": [
+        "jsr:@nats-io/jetstream@3.3.1",
+        "jsr:@nats-io/nats-core"
+      ]
+    },
+    "@nats-io/nats-core@3.3.1": {
+      "integrity": "61c9624a9f775399a817f3fea7fa84445942ba47108d50b1f1d0ab1eba55a4ea",
+      "dependencies": [
+        "jsr:@nats-io/nkeys",
+        "jsr:@nats-io/nuid"
+      ]
+    },
+    "@nats-io/nkeys@2.0.3": {
+      "integrity": "e92c96eea32b559f2e0f32555b49376942d66c07e59efff9180dbf29e516fbd8",
+      "dependencies": [
+        "npm:tweetnacl"
+      ]
+    },
+    "@nats-io/nuid@2.0.3": {
+      "integrity": "c1069446e43dfa4f5e599c398a1bfc1be0c8dab1c839b6d2b9c3617cc1998306"
+    },
+    "@nats-io/transport-deno@3.3.1": {
+      "integrity": "414e7b31e48f0baf8d6bc9803b9b4effd620c7e44a672f33ed0bae2028f0d885",
+      "dependencies": [
+        "jsr:@nats-io/nats-core",
+        "jsr:@std/io"
+      ]
+    },
+    "@std/assert@1.0.14": {
+      "integrity": "68d0d4a43b365abc927f45a9b85c639ea18a9fab96ad92281e493e4ed84abaa4",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    },
+    "@std/bytes@1.0.6": {
+      "integrity": "f6ac6adbd8ccd99314045f5703e23af0a68d7f7e58364b47d2c7f408aeb5820a"
+    },
+    "@std/fmt@1.0.9": {
+      "integrity": "2487343e8899fb2be5d0e3d35013e54477ada198854e52dd05ed0422eddcabe0"
+    },
+    "@std/internal@1.0.12": {
+      "integrity": "972a634fd5bc34b242024402972cd5143eac68d8dffaca5eaa4dba30ce17b027"
+    },
+    "@std/io@0.225.2": {
+      "integrity": "3c740cd4ee4c082e6cfc86458f47e2ab7cb353dc6234d5e9b1f91a2de5f4d6c7",
+      "dependencies": [
+        "jsr:@std/bytes"
+      ]
+    },
+    "@std/path@1.1.2": {
+      "integrity": "c0b13b97dfe06546d5e16bf3966b1cadf92e1cc83e56ba5476ad8b498d9e3038",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    },
+    "@std/yaml@1.0.11": {
+      "integrity": "bd139ce77f2d06cbed3713c8b26d301d2a2e12ecc7986130a268107e212143ee"
+    }
+  },
+  "npm": {
+    "tweetnacl@1.0.3": {
+      "integrity": "sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw=="
+    }
+  },
+  "workspace": {
+    "members": {
+      "cli": {
+        "dependencies": [
+          "jsr:@std/fmt@1",
+          "jsr:@std/path@1",
+          "jsr:@std/yaml@1"
+        ]
+      },
+      "instruments": {
+        "dependencies": [
+          "jsr:@joyautomation/coral@^0.0.12",
+          "jsr:@nats-io/transport-deno@3.3",
+          "jsr:@std/path@1",
+          "jsr:@std/yaml@1"
+        ]
+      },
+      "physics/water-tank": {
+        "dependencies": [
+          "jsr:@std/assert@1"
+        ]
+      },
+      "verticals/water-treatment": {
+        "dependencies": [
+          "jsr:@joyautomation/coral@^0.0.12",
+          "jsr:@joyautomation/tentacle-plc@^0.0.6",
+          "jsr:@nats-io/transport-deno@3.3"
+        ]
+      },
+      "verticals/water-treatment-fieldbus": {
+        "dependencies": [
+          "jsr:@joyautomation/coral@^0.0.12",
+          "jsr:@joyautomation/tentacle-plc@^0.0.6",
+          "jsr:@nats-io/transport-deno@3.3"
+        ]
+      }
+    }
+  }
+}

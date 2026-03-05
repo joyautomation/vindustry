@@ -1,0 +1,17 @@
+{
+  "name": "@vindustry/instruments",
+  "version": "0.0.1",
+  "exports": "./src/runtime.ts",
+  "tasks": {
+    "instrument": "deno run --allow-net --allow-env --allow-read src/main.ts"
+  },
+  "imports": {
+    "@std/yaml": "jsr:@std/yaml@1",
+    "@std/path": "jsr:@std/path@1",
+    "@joyautomation/coral": "jsr:@joyautomation/coral@^0.0.12",
+    "@nats-io/transport-deno": "jsr:@nats-io/transport-deno@3.3"
+  },
+  "compilerOptions": {
+    "strict": true
+  }
+}
