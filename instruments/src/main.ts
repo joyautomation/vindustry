@@ -10,6 +10,7 @@
  *   NATS_SERVERS     — NATS server URL(s) (default: nats://localhost:4222)
  *   PORT             — Modbus TCP port (default: 502)
  *   PHYSICS_PREFIX   — Physics engine topic prefix (default: SOURCE_MODULE)
+ *   SUBSCRIBE_SUBJECT — NATS subject for modbus-server registration (default: modbus-server.subscribe)
  */
 
 import { parse as parseYaml } from "@std/yaml";
@@ -22,6 +23,7 @@ const SOURCE_MODULE = Deno.env.get("SOURCE_MODULE");
 const NATS_SERVERS = Deno.env.get("NATS_SERVERS") || "nats://localhost:4222";
 const PORT = parseInt(Deno.env.get("PORT") || "502");
 const PHYSICS_PREFIX = Deno.env.get("PHYSICS_PREFIX");
+const SUBSCRIBE_SUBJECT = Deno.env.get("SUBSCRIBE_SUBJECT");
 
 if (!PROFILE) {
   console.error("Error: PROFILE environment variable is required");
@@ -60,6 +62,7 @@ const instance = await startInstrument({
   natsServers: NATS_SERVERS,
   port: PORT,
   physicsPrefix: PHYSICS_PREFIX,
+  subscribeSubject: SUBSCRIBE_SUBJECT,
 });
 
 Deno.addSignalListener("SIGINT", async () => {

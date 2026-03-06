@@ -86,9 +86,9 @@ async function main() {
   const inputs: TankInputs = { pumpSpeed: 0, valvePosition: 50 };
 
   // Subscribe to PLC actuator outputs
-  // The PLC publishes to {projectId}.data.{variableId} with PlcDataMessage
-  const pumpSpeedSub = nc.subscribe(`${PLC_PROJECT_ID}.data.pumpSpeed`);
-  const valvePosSub = nc.subscribe(`${PLC_PROJECT_ID}.data.valvePosition`);
+  // The PLC publishes to plc.data.{projectId}.{variableId} with PlcDataMessage
+  const pumpSpeedSub = nc.subscribe(`plc.data.${PLC_PROJECT_ID}.pumpSpeed`);
+  const valvePosSub = nc.subscribe(`plc.data.${PLC_PROJECT_ID}.valvePosition`);
 
   const processActuator = async (
     sub: ReturnType<NatsConnection["subscribe"]>,

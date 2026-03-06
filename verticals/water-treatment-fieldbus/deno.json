@@ -8,7 +8,6 @@
     "register": "deno run --allow-net --allow-env --allow-read instruments/register.ts"
   },
   "imports": {
-    "@vindustry/water-tank": "workspace:*",
     "@tentacle/plc": "jsr:@joyautomation/tentacle-plc@^0.0.6",
     "@joyautomation/coral": "jsr:@joyautomation/coral@^0.0.12",
     "@nats-io/transport-deno": "jsr:@nats-io/transport-deno@3.3"

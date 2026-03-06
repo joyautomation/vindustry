@@ -2,11 +2,6 @@
   "version": "5",
   "specifiers": {
     "jsr:@joyautomation/coral@^0.0.12": "0.0.12",
-    "jsr:@joyautomation/tentacle-nats-schema@^0.0.1": "0.0.1",
-    "jsr:@joyautomation/tentacle-plc@^0.0.6": "0.0.6",
-    "jsr:@nats-io/jetstream@3.3": "3.3.1",
-    "jsr:@nats-io/jetstream@3.3.1": "3.3.1",
-    "jsr:@nats-io/kv@3": "3.3.1",
     "jsr:@nats-io/nats-core@3.3.1": "3.3.1",
     "jsr:@nats-io/nkeys@2.0.3": "2.0.3",
     "jsr:@nats-io/nuid@2.0.3": "2.0.3",
@@ -25,32 +20,6 @@
       "integrity": "a95c60c93c2fb9f434437fd975979038e3358f65621f55e9fd5b8d831aeda1ee",
       "dependencies": [
         "jsr:@std/fmt"
-      ]
-    },
-    "@joyautomation/tentacle-nats-schema@0.0.1": {
-      "integrity": "05ab61f736ed2c22e979aafba75079e3af23c4f160c484d46f2ccbdaec65c9d5"
-    },
-    "@joyautomation/tentacle-plc@0.0.6": {
-      "integrity": "fbdb8ca14d7b3366120154e0370ecdd89c8c4c4408683b4be17d00f2a8a64507",
-      "dependencies": [
-        "jsr:@joyautomation/coral",
-        "jsr:@joyautomation/tentacle-nats-schema",
-        "jsr:@nats-io/jetstream@3.3",
-        "jsr:@nats-io/kv",
-        "jsr:@nats-io/transport-deno"
-      ]
-    },
-    "@nats-io/jetstream@3.3.1": {
-      "integrity": "0881df18ff746d42598af428d5a80abc695e998a679fcfc5303f18dd67958d4c",
-      "dependencies": [
-        "jsr:@nats-io/nats-core"
-      ]
-    },
-    "@nats-io/kv@3.3.1": {
-      "integrity": "6900c5e1a5cfc30fcc7d33368ff2403bd3015d6ccab5fddf725c3101953c5a75",
-      "dependencies": [
-        "jsr:@nats-io/jetstream@3.3.1",
-        "jsr:@nats-io/nats-core"
       ]
     },
     "@nats-io/nats-core@3.3.1": {

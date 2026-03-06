@@ -24,6 +24,7 @@ export type InstrumentConfig = {
   natsServers: string;
   port?: number; // Modbus TCP port (default: 502)
   physicsPrefix?: string; // Physics engine topic prefix (default: sourceModuleId)
+  subscribeSubject?: string; // NATS subject for modbus-server registration (default: "modbus-server.subscribe")
 };
 
 export type InstrumentInstance = {
@@ -95,8 +96,9 @@ export async function startInstrument(
   const subscribeReq = buildSubscribeRequest(config);
   while (true) {
     try {
+      const subject = config.subscribeSubject ?? "modbus-server.subscribe";
       const response = await nc.request(
-        "modbus-server.subscribe",
+        subject,
         encoder.encode(JSON.stringify(subscribeReq)),
         { timeout: 5000 },
       );
@@ -128,8 +130,9 @@ export async function startInstrument(
       value,
       timestamp: Date.now(),
     });
+    // Use plc.data prefix to match modbus-server's subscription pattern
     nc.publish(
-      `${sourceModuleId}.data.${name}`,
+      `plc.data.${sourceModuleId}.${name}`,
       encoder.encode(msg),
     );
   }

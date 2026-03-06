@@ -62,6 +62,7 @@ containers:
         working_directory: /opt/vindustry/tentacle-modbus-server
         env:
           NATS_SERVERS: nats://10.50.2.2:4222
+          SUBSCRIBE_SUBJECT: modbus-server.flow-meter.subscribe
       instrument:
         run: /root/.deno/bin/deno task instrument
         working_directory: /opt/vindustry/workspace/instruments
@@ -69,6 +70,7 @@ containers:
           NATS_SERVERS: nats://10.50.2.2:4222
           PROFILE: flow-meters/siemens-sitrans-fm-mag8000
           SOURCE_MODULE: flow-meter
+          SUBSCRIBE_SUBJECT: modbus-server.flow-meter.subscribe
         after: modbus-server
 
   level-sensor:
@@ -92,6 +94,7 @@ containers:
         working_directory: /opt/vindustry/tentacle-modbus-server
         env:
           NATS_SERVERS: nats://10.50.2.2:4222
+          SUBSCRIBE_SUBJECT: modbus-server.level-sensor.subscribe
       instrument:
         run: /root/.deno/bin/deno task instrument
         working_directory: /opt/vindustry/workspace/instruments
@@ -99,6 +102,7 @@ containers:
           NATS_SERVERS: nats://10.50.2.2:4222
           PROFILE: level-transmitters/endress-hauser-levelflex-fmp51
           SOURCE_MODULE: level-sensor
+          SUBSCRIBE_SUBJECT: modbus-server.level-sensor.subscribe
         after: modbus-server
 
   vfd:
@@ -122,6 +126,7 @@ containers:
         working_directory: /opt/vindustry/tentacle-modbus-server
         env:
           NATS_SERVERS: nats://10.50.2.2:4222
+          SUBSCRIBE_SUBJECT: modbus-server.vfd.subscribe
       instrument:
         run: /root/.deno/bin/deno task instrument
         working_directory: /opt/vindustry/workspace/instruments
@@ -129,6 +134,7 @@ containers:
           NATS_SERVERS: nats://10.50.2.2:4222
           PROFILE: vfds/abb-acs580
           SOURCE_MODULE: vfd
+          SUBSCRIBE_SUBJECT: modbus-server.vfd.subscribe
         after: modbus-server
 
   plc:
