@@ -133,11 +133,12 @@ export async function up(
             "git", "clone", "--depth", "1", "--branch", ref,
             source.git, cloneDir,
           ]);
-          // Copy just the needed subdirectory
-          const srcDir = `${cloneDir}/${source.path}`;
+          // Copy the needed subdirectory (or whole repo if path is ".")
+          const srcDir = source.path === "." ? cloneDir : `${cloneDir}/${source.path}`;
+          const destName = source.path === "." ? source.repo : basename(source.path);
           await incus.exec(cn, ["mkdir", "-p", remotePath]);
           await incus.exec(cn, [
-            "cp", "-r", srcDir, `${remotePath}${basename(source.path)}`,
+            "cp", "-r", srcDir, `${remotePath}${destName}`,
           ]);
           // Clean up clone
           await incus.exec(cn, ["rm", "-rf", cloneDir]);

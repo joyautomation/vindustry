@@ -18,9 +18,9 @@ containers:
       - curl -fsSL https://deno.land/install.sh | sh > /dev/null 2>&1
     sources:
       - verticals/water-treatment
-      - repo: tentacle
-        path: tentacle-modbus-server
-        git: https://github.com/joyautomation/tentacle.git
+      - repo: tentacle-modbus-server
+        path: .
+        git: https://github.com/joyautomation/tentacle-modbus-server.git
         ref: main
     services:
       nats:
